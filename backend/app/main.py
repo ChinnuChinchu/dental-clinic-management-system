@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import admin,appointments, auth, doctors,reception, users
+from app.api.routes import admin,appointments, auth, doctors,reception, users,visits
 
 app = FastAPI(title="Dental Clinic API")
 
@@ -19,6 +19,7 @@ app.include_router(users.router)
 app.include_router(doctors.router)
 app.include_router(appointments.router)
 app.include_router(reception.router)
+app.include_router(visits.router)
 
 
 @app.get("/api/health")

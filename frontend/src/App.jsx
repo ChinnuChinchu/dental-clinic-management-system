@@ -13,9 +13,11 @@ import Login from './pages/Login'
 import MyAppointments from './pages/MyAppointments'
 import Register from './pages/Register'
 import GuestOnly from './auth/GuestOnly'
-import ComingSoon from './pages/ComingSoon'
 import PatientDashboard from './pages/PatientDashboard'
 import Reception from './pages/reception/Reception'
+import DoctorHome from './pages/doctor/DoctorHome'
+import DoctorVisit from './pages/doctor/DoctorVisit'
+import MyRecords from './pages/MyRecords'
 
 function PageLayout() {
   return (
@@ -31,17 +33,16 @@ export default function App() {
       <Navbar />
       <div className="flex-1">
         <Routes>
-          {/* <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} /> */}
+          
             <Route path="/" element={<GuestOnly><Home /></GuestOnly>} />
             <Route path="/login" element={<GuestOnly><Login /></GuestOnly>} />
             <Route path="/register" element={<GuestOnly><Register /></GuestOnly>} />
           <Route element={<PageLayout />}>
           
           <Route path="/dashboard" element={<ProtectedRoute roles={['patient']}><PatientDashboard /></ProtectedRoute>} />
-          <Route path="/doctor" element={<ProtectedRoute roles={['doctor']}><ComingSoon title="Doctor dashboard" /></ProtectedRoute>} />
-          {/* <Route path="/reception" element={<ProtectedRoute roles={['staff']}><ComingSoon title="Reception dashboard" /></ProtectedRoute>} /> */}
+         <Route path="/doctor" element={<ProtectedRoute roles={['doctor']}><DoctorHome /></ProtectedRoute>} />
+          <Route path="/doctor/visit/:apptId" element={<ProtectedRoute roles={['doctor']}><DoctorVisit /></ProtectedRoute>} />
+          <Route path="/my-records" element={<ProtectedRoute roles={['patient']}><MyRecords /></ProtectedRoute>} />
             <Route
               path="/reception"
               element={<ProtectedRoute roles={['staff', 'admin']}><Reception /></ProtectedRoute>}

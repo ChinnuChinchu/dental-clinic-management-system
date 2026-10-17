@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom'
 import api, { errorMessage } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 import { card } from '../components/ui'
-import { formatDateTime } from '../utils/date'
+import { formatDate, formatDateTime, todayIST } from '../utils/date'
 
 export default function PatientDashboard() {
   const { user } = useAuth()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [followUp, setFollowUp] = useState(null)
 
   useEffect(() => {
     api.get('/api/appointments/mine')
@@ -17,6 +18,16 @@ export default function PatientDashboard() {
       .catch((e) => setError(errorMessage(e)))
       .finally(() => setLoading(false))
   }, [])
+
+  useEffect(() => {
+  api.get('/api/visits/mine')
+    .then((r) => {
+      const today = todayIST()
+      const dates = r.data.map((v) => v.follow_up_date).filter((d) => d && d >= today).sort()
+      setFollowUp(dates[0] || null)
+    })
+    .catch(() => {})
+}, [])
 
   const now = Date.now()
   const upcoming = items
@@ -55,6 +66,18 @@ export default function PatientDashboard() {
           </>
         )}
       </section>
+
+      {followUp && (
+        <section className={`${card} mb-6 flex flex-wrap items-center justify-between gap-3 border-wave`}>
+          <div>
+            <p className="text-sm text-lagoon/60">Next checkup due</p>
+            <p className="text-lg font-semibold">🔔 {formatDate(followUp)}</p>
+          </div>
+          <Link to="/doctors" className="rounded-full bg-wave px-5 py-2 text-sm font-semibold text-lagoon hover:bg-wave-dark">
+            Book it now
+          </Link>
+        </section>
+      )}
 
       {/* Quick actions */}
       <div className="mb-8 grid gap-4 sm:grid-cols-2">
