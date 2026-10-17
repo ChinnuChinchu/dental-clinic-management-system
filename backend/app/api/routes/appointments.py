@@ -211,3 +211,20 @@ def no_show(
     db.commit()
     db.refresh(appt)
     return appt
+
+@router.get("/{appt_id}", response_model=AppointmentOut)
+def get_appointment(
+    appt_id: int,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    appt = db.get(Appointment, appt_id)
+    if not appt:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Appointment not found")
+    if user.role == Role.patient and appt.patient_id != user.id:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Appointment not found")
+    if user.role == Role.doctor:
+        profile = db.scalar(select(DoctorProfile).where(DoctorProfile.user_id == user.id))
+        if not profile or appt.doctor_id != profile.id:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Appointment not found")
+    return appt
