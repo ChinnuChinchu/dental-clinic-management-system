@@ -22,9 +22,14 @@ const roleLinks = {
     ['My records', '/my-records'],
   ],
   admin: [['Admin dashboard', '/admin/doctors'],
-         ['Reception', '/reception'],],
+         ['Reception', '/reception'],
+        ['Reminders','/notifications'],
+        ],
   doctor: [['Today', '/doctor']], // added with the doctor dashboard
-  staff: [['Reception', '/reception']],  // added with the reception dashboard
+  staff: [
+        ['Reception', '/reception'],
+        ['Reminders','/notifications'],
+      ],  // added with the reception dashboard
 }
 
 const linkClass = ({ isActive }) =>
