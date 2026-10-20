@@ -18,6 +18,7 @@ import Reception from './pages/reception/Reception'
 import DoctorHome from './pages/doctor/DoctorHome'
 import DoctorVisit from './pages/doctor/DoctorVisit'
 import MyRecords from './pages/MyRecords'
+import Notifications from './pages/Notifications'
 
 function PageLayout() {
   return (
@@ -33,7 +34,11 @@ export default function App() {
       <Navbar />
       <div className="flex-1">
         <Routes>
-          
+          <Route
+            path="/notifications"
+            element={<ProtectedRoute roles={['staff', 'admin']}><Notifications /></ProtectedRoute>}
+          />
+
             <Route path="/" element={<GuestOnly><Home /></GuestOnly>} />
             <Route path="/login" element={<GuestOnly><Login /></GuestOnly>} />
             <Route path="/register" element={<GuestOnly><Register /></GuestOnly>} />

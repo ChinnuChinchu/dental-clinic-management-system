@@ -15,6 +15,7 @@ from app.schemas.appointment import AppointmentOut
 from app.schemas.reception import WalkInPatientIn
 from app.schemas.user import UserOut
 from app.services.slots import now_local
+from app.core.constants import WALKIN_EMAIL_DOMAIN as WALKIN_DOMAIN
 
 router = APIRouter(
     prefix="/api/reception",
@@ -22,7 +23,7 @@ router = APIRouter(
     dependencies=[Depends(require_roles(Role.staff, Role.admin))],
 )
 
-WALKIN_DOMAIN = "walkin.noemail"
+
 
 
 @router.post("/patients", response_model=UserOut, status_code=201)

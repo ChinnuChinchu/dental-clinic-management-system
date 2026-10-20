@@ -20,3 +20,5 @@ dist/
 *.log
 
 credentials
+
+celerybeat-schedule*
